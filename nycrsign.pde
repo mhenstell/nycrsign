@@ -4,27 +4,29 @@ import net.fladdict.oscillator.*;
 
 boolean state = false;
 
-Oscillator osc;
-Oscillator osc1;
-Oscillator osc2;
-Oscillator osc3;
+Oscillator n1;
+Oscillator y1;
+Oscillator c1;
+Oscillator r1;
 
 String[][] letters;
 
 int totalPixels = 0;
 
-ArrayList<Pixel> pixels;
+ArrayList<Letter> lettersList;
 
 void setup() {
   size(800,600);
   frameRate(30);
   
-  osc = new OscSin(128,100,128);
-  osc1 = new OscSin(128,-100,128);
-  osc2 = new OscWhiteNoise(100);
-  osc3 = new OscSawTooth(100,100);
+  n1 = new OscSin(128,100,128, 0);
+  y1 = new OscSin(128,100,128, 1);
+  c1 = new OscSin(128,100,128, 2);
+  r1 = new OscSin(128,100,128, 3);
   
-  pixels = new ArrayList<Pixel>();
+  
+  //pixels = new ArrayList<Pixel>();
+  lettersList = new ArrayList<Letter>();
   
   letters = new String[4][8];
   letters[0][0] = "1110000011";
@@ -64,28 +66,34 @@ void setup() {
   letters[3][7] = "1100000011";
   
   for (int letter = 0; letter < 2; letter++) {
+    lettersList.add(new Letter(letter*10 + letter*1, 0));
+    ArrayList<Pixel> pixels = new ArrayList<Pixel>();
+    
     for (int y = 0; y < 8; y++) {
       for (int x = 0; x < 10; x++) {
         String row = letters[letter][y];
         if (row.charAt(x) == '1') {
-          pixels.add(new Pixel((letter*10) + letter*1 + x, y));
+          //pixels.add(new Pixel((letter*10) + letter*1 + x, y));
+          pixels.add(new Pixel(x, y));
           totalPixels += 1;
         }
       }
-    } 
+    }
+    
+    lettersList.get(letter).addPixels(pixels);
   }
   
-  for (int letter = 2; letter < 4; letter++) {
-    for (int y = 0; y < 8; y++) {
-      for (int x = 0; x < 10; x++) {
-        String row = letters[letter][y];
-        if (row.charAt(x) == '1') {
-          pixels.add(new Pixel(((letter - 2)*10) + (letter - 2)*1 + x, y + 9));
-          totalPixels += 1;
-        }
-      }
-    } 
-  }
+//  for (int letter = 2; letter < 4; letter++) {
+//    for (int y = 0; y < 8; y++) {
+//      for (int x = 0; x < 10; x++) {
+//        String row = letters[letter][y];
+//        if (row.charAt(x) == '1') {
+//          pixels.add(new Pixel(((letter - 2)*10) + (letter - 2)*1 + x, y + 9));
+//          totalPixels += 1;
+//        }
+//      }
+//    } 
+//  }
   
   
   println(totalPixels);
@@ -95,28 +103,20 @@ void draw() {
   
   background(0);
   scale(3);
-  for (int x=0; x < pixels.size(); x++) {
-    pixels.get(x).draw(); 
+  for (int x=0; x < lettersList.size(); x++) {
+    lettersList.get(x).draw();
   }
   
 
   
-  for (int x=0; x< pixels.size(); x++) {
-    
-      
-      pixels.get(x).update(color(osc.getValue(),0,0), color(osc1.getValue(),0,0), color(255,255,255)); 
-    
-    
-  }
+//  for (int x=0; x< pixels.size(); x++) {
+//    
+//      
+//      pixels.get(x).update(color(n1.getValue(),0,0), color(osc1.getValue(),0,0), color(255,255,255)); 
+//    
+//    
+//  }
   
-  osc.update();
-  osc1.update();
-  osc2.update();
-  osc3.update();
-  
-  if (osc3.getValue() % 4 == 0) {
-  
-  osc.setPeriod(osc2.getValue());
-  osc1.setPeriod(-osc2.getValue());
-  }
+ 
+}
 }
