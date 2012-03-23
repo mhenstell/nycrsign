@@ -1,0 +1,8 @@
+h2. NYCR Sign
+
+A proposed sign project based off of the seminal DISORIENT sign. The sign spells "NYCR" (for NYC Resistor), although the pixel boards are reconfigurable.
+
+h2. Files
+@nycrsign.pde@ - Processing sketch that serves as a basic simulator for the NYCR sign.
+@nycrsign.sch@ - Eagle 6 schematic file for the 3x3 pixel board with nine LEDs of three colors.
+@nycrsign.brd@ - Eagle 6 board file based on the above schematic.
